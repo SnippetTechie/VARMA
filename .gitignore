@@ -1,0 +1,13 @@
+node_modules
+.next
+out
+.env*.local
+*.log
+.DS_Store
+*.tsbuildinfo
+
+# Raw source materials (unoptimized originals, design reference) — not used
+# by the build; the compressed/optimized versions actually served live in
+# public/. Keeping these out of history avoids a multi-hundred-MB repo.
+/assets
+/Reference
