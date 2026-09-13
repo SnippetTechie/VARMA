@@ -1,0 +1,139 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  scroll-behavior: smooth;
+  /* Sticky nav is 64px (h-16) — without this, jumping to an anchor (nav
+     click, hash link) scrolls the section title straight under it, and a
+     keyboard-focused control right after landing can end up hidden behind
+     it too (WCAG 2.2 AA "Focus Not Obscured"). */
+  scroll-padding-top: 84px;
+}
+
+/* Safety net: nothing on this page is meant to scroll sideways. A
+   decorative absolutely-positioned element (a glow orb, an oversized
+   background shape) missing overflow-hidden on its own section has caused
+   real horizontal scroll on mobile before — this is the backstop so that
+   class of bug can only ever clip, never open a sideways scrollbar. */
+html,
+body {
+  overflow-x: hidden;
+  max-width: 100%;
+}
+
+/* Slow ambient breathing glow — used once, on the Hero's V.A.R.M.A node,
+   to draw the eye to the one accent element without competing motion. */
+@keyframes pulse-glow {
+  0%,
+  100% {
+    box-shadow: 0 0 40px -8px rgba(79, 139, 255, 0.6);
+  }
+  50% {
+    box-shadow: 0 0 56px -6px rgba(79, 139, 255, 0.85);
+  }
+}
+.pulse-glow {
+  animation: pulse-glow 3s ease-in-out infinite;
+}
+
+body {
+  background: #05060b;
+  color: #eef1f8;
+}
+
+::selection {
+  background: rgba(79, 139, 255, 0.25);
+  color: #eef1f8;
+}
+
+/* Fine grid texture, very low contrast — supports content, never competes */
+.bg-fine-grid {
+  background-image:
+    linear-gradient(rgba(158, 170, 204, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(158, 170, 204, 0.05) 1px, transparent 1px);
+  background-size: 44px 44px;
+}
+
+.text-balance {
+  text-wrap: balance;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+.card-border {
+  border: 1px solid rgba(158, 170, 204, 0.12);
+}
+
+/* Periodic diagonal light sweep across video showcase frames */
+.light-sweep {
+  background: linear-gradient(
+    115deg,
+    transparent 30%,
+    rgba(255, 255, 255, 0.09) 47%,
+    rgba(255, 255, 255, 0.15) 50%,
+    rgba(255, 255, 255, 0.09) 53%,
+    transparent 70%
+  );
+  background-size: 250% 250%;
+  background-position: -60% -60%;
+  animation: light-sweep 5.5s ease-in-out infinite;
+  animation-delay: 1.2s;
+  mix-blend-mode: overlay;
+}
+@keyframes light-sweep {
+  0% {
+    background-position: -60% -60%;
+  }
+  35%,
+  100% {
+    background-position: 60% 60%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .light-sweep {
+    display: none;
+  }
+}
+
+.glow-border {
+  position: relative;
+}
+.glow-border::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(135deg, rgba(79, 139, 255, 0.5), rgba(139, 124, 246, 0.3), transparent 60%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.glow-border:hover::before {
+  opacity: 1;
+}
+
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-none {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
